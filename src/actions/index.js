@@ -18,14 +18,18 @@ export const requestPosts = subreddit => ({
   subreddit
 })
 
+export const transformResponseBody = (json) => {
+  return json.data.children.map(child => child.data);
+}
+
 export const receivePosts = (subreddit, json) => ({
   type: RECEIVE_POSTS,
   subreddit,
-  posts: json.data.children.map(child => child.data),
+  posts: transformResponseBody(json),
   receivedAt: Date.now()
 })
 
-const fetchPosts = subreddit => dispatch => {
+export const fetchPosts = subreddit => dispatch => {
   dispatch(requestPosts(subreddit))
   return fetch(`https://www.reddit.com/r/${subreddit}.json`)
     .then(response => response.json())
@@ -33,6 +37,7 @@ const fetchPosts = subreddit => dispatch => {
 }
 
 const shouldFetchPosts = (state, subreddit) => {
+  console.log(state);
   const posts = state.postsBySubreddit[subreddit]
   if (!posts) {
     return true
