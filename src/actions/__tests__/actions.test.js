@@ -62,7 +62,7 @@ describe('actions', () => {
       // Create a store with the provided object as the initial state
       const store = mockStore({})
 
-      return store.dispatch(actions.fetchPostsIfNeeded(subreddit)).then(() => {
+      return store.dispatch(actions.fetchPosts(subreddit)).then(() => {
         expect(store.getActions()).toMatchObject(expectedActions)
       })
     })
